@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi Step Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main">
+        <div class="container">
+            <h2>Create a Multi-Step Form Using HTML, CSS and JavaScript</h2>
+            <!-- step tab -->
+            <div class="step-container">
+                <div class="step-box">
+                    <p class="step-num">1</p>
+                    <p class="step-detail">Create Account</p>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-box">
+                    <p class="step-num">2</p>
+                    <p class="step-detail">Question 1</p>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-box">
+                    <p class="step-num">3</p>
+                    <p class="step-detail">Question 2</p>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-box">
+                    <p class="step-num">4</p>
+                    <p class="step-detail">Question 3</p>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-box">
+                    <p class="step-num">5</p>
+                    <p class="step-detail">Summary</p>
+                </div>
+            </div>
+
+            <!-- body -->
+             <div class="body-container">
+                <div class="section-container">
+                    <div class="section" id="section-1">
+                        <p>Create Account</p>
+                        <input type="text" placeholder="Username..." id="usename-input">
+                        <input type="password" placeholder="Password..." id="password-input">
+                    </div>   
+                    <div class="section" id="section-2">
+                        <p id="question1"></p>
+                    </div>
+                    <div class="section" id="section-3">
+                        <p id="question2"></p>
+                    </div>   
+                    <div class="section" id="section-4">
+                        <p id="question3"></p>
+                    </div>   
+                    <div class="section" id="section-5">
+                        <p>Summary</p>
+                        <p id="result-text"></p>
+                        <button id="history-btn">Show History</button>   
+                        <p id="answer-history"></p>
+                    </div>               
+                </div>
+
+                <!-- handle -->
+                <div class="pages-handle">
+                    <button id="prev-btn" style="visibility: hidden;">Prev</button>
+                    <button id="next-btn">Next</button>
+                </div>
+            </div>    
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
