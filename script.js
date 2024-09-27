@@ -6,7 +6,7 @@ const prevBtn = document.getElementById("prev-btn");
 const nextBtn = document.getElementById("next-btn");
 const historyBtn = document.getElementById("history-btn");
 
-const usernameInput = document.getElementById("usename-input");
+const usernameInput = document.getElementById("username-input");
 const passwordInput = document.getElementById("password-input");
 
 let pagesCount = 0;
@@ -16,27 +16,26 @@ const questions = [
         id: 1,
         question: "What continent is Thailand in?",
         choices: ["Africa","Asia","Europe","South America"],
-        answers: [2]
+        answers: [1]
     },
     {
         id: 2,
         question: "What is the capital city of Thailand?",
         choices: ["Bangkok","Chiang Mai","Phuket","Pattaya"],
-        answers: [1]
+        answers: [0]
         
     },
     {
         id: 3,
         question: "Which of the following are Thai dishes?",
         choices: ["Pad Thai","Spaghetti","Tom Yum Goong","Sushi"], 
-        answers: [1,3]
-        
+        answers: [0,2]
     },
     {
         id: 4,
         question: "Which of the following are traditional Thai festivals?",
         choices: ["Christmas","Loy krathong","Halloween","Songkran"],
-        answers: [4]
+        answers: [1,3]
     }
 ];
 
@@ -54,23 +53,23 @@ showQuestion();
 updatePage();
 
 function showQuestion() {
-    questions.forEach((cuurQuestion,i) =>{
+    questions.forEach((currentQuestion) =>{
         // create question
-        const targetQuestion = document.getElementById(`question${i+1}`);
-        targetQuestion.innerHTML = cuurQuestion.question;
+        const targetQuestion = document.getElementById(`question${currentQuestion.id}`);
+        targetQuestion.innerHTML = currentQuestion.question;
 
         //create answer
-        const targetSection = document.getElementById(`section-${i + 2}`);          
-        cuurQuestion.answers.forEach(e => {
+        const targetSection = document.getElementById(`section-${currentQuestion.id+1}`);          
+        currentQuestion.choices.forEach((choice,i) => {
             const btn = document.createElement("button");
-            btn.innerHTML = e.text;               
-            btn.classList.add(`btn-${i + 1}`);          
+            btn.innerHTML = choice;               
+            btn.classList.add(`btn-${currentQuestion.id}`);          
             targetSection.appendChild(btn); 
             // define correct answer with custom attribue  
-            if (e.correct) {
-                btn.dataset.correct = e.correct;
-            }
-            btn.addEventListener("click",selectAnswer);
+            if (currentQuestion.answers.includes(i)) {
+                btn.dataset.correct = true;  
+            };         
+            // btn.addEventListener("click",selectAnswer);
         });
     });  
 };
@@ -157,34 +156,34 @@ function updateUserData() {
     userData.password = passwordInput.value; 
 }
 
-function selectAnswer(selectedElement) {
-    const selectedBtn = selectedElement.target;
+// function selectAnswer(selectedElement) {
+//     const selectedBtn = selectedElement.target;
     
-    Array.from(selectedBtn.parentElement.children).forEach(e =>{
-        e.classList.remove("selected");
-        e.disabled=false;
-    })
+//     Array.from(selectedBtn.parentElement.children).forEach(e =>{
+//         e.classList.remove("selected");
+//         e.disabled=false;
+//     })
 
-    selectedBtn.classList.add("selected");
-    selectedBtn.disabled=true;
+//     selectedBtn.classList.add("selected");
+//     selectedBtn.disabled=true;
 
-    const questionText = document.getElementById(`question${pagesCount}`).innerHTML; 
-    const isCorrect = selectedBtn.dataset.correct === "true"; 
-    const existingAnswer = answerHistory.find(function(answer) {
-        return answer.question === questionText;
-    });
+//     const questionText = document.getElementById(`question${pagesCount}`).innerHTML; 
+//     const isCorrect = selectedBtn.dataset.correct === "true"; 
+//     const existingAnswer = answerHistory.find(function(answer) {
+//         return answer.question === questionText;
+//     });
 
-    if (existingAnswer) {
-        existingAnswer.selectedAnswer = selectedBtn.textContent;
-        existingAnswer.isCorrect = isCorrect;
-    } else {
-        answerHistory.push({
-            question: questionText,
-            selectedAnswer: selectedBtn.textContent,
-            isCorrect: isCorrect
-        });
-    }
-}
+//     if (existingAnswer) {
+//         existingAnswer.selectedAnswer = selectedBtn.textContent;
+//         existingAnswer.isCorrect = isCorrect;
+//     } else {
+//         answerHistory.push({
+//             question: questionText,
+//             selectedAnswer: selectedBtn.textContent,
+//             isCorrect: isCorrect
+//         });
+//     }
+// }
 
 // function calculationScore(){
 //     console.log(answerHistory);
