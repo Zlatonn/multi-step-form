@@ -13,40 +13,30 @@ let pagesCount = 0;
 
 const questions = [
     {
-        question:"What continent is Thailand in?",
-        answers:[
-            {text:"Africa",correct:false},
-            {text:"Asia",correct:true},
-            {text:"Europe",correct:false},
-            {text:"South America",correct:false},
-        ]
+        id: 1,
+        question: "What continent is Thailand in?",
+        choices: ["Africa","Asia","Europe","South America"],
+        answers: [2]
     },
     {
-        question:"What is the capital city of Thailand?",
-        answers:[
-            {text:"Bangkok",correct:true},
-            {text:"Chiang Mai",correct:false},
-            {text:"Phuket",correct:false},
-            {text:"Pattaya",correct:false},
-        ]
+        id: 2,
+        question: "What is the capital city of Thailand?",
+        choices: ["Bangkok","Chiang Mai","Phuket","Pattaya"],
+        answers: [1]
+        
     },
     {
-        question:"Which of the following are Thai dishes?",
-        answers:[
-            {text:"Hamberger",correct:false},
-            {text:"Spaghetti",correct:false},
-            {text:"Tom Yum Goong",correct:true},
-            {text:"Sushi",correct:false},
-        ]
-    }
-    ,{
-        question:"Which of the following are traditional Thai festivals?",
-        answers:[
-            {text:"Christmas",correct:false},
-            {text:"Diwali",correct:false},
-            {text:"Halloween",correct:false},
-            {text:"Songkran",correct:true},
-        ]
+        id: 3,
+        question: "Which of the following are Thai dishes?",
+        choices: ["Pad Thai","Spaghetti","Tom Yum Goong","Sushi"], 
+        answers: [1,3]
+        
+    },
+    {
+        id: 4,
+        question: "Which of the following are traditional Thai festivals?",
+        choices: ["Christmas","Loy krathong","Halloween","Songkran"],
+        answers: [4]
     }
 ];
 
@@ -54,6 +44,8 @@ let userData = {
     username:"",
     password:""
 };
+
+let answered = {};
 
 let answerHistory =[];
 let score = 0;
@@ -194,48 +186,48 @@ function selectAnswer(selectedElement) {
     }
 }
 
-function calculationScore(){
-    console.log(answerHistory);
-    score = 0;
-    answerHistory.forEach(e => {
-        if (e.isCorrect){
-            score++;
-        }
-    })
-}
+// function calculationScore(){
+//     console.log(answerHistory);
+//     score = 0;
+//     answerHistory.forEach(e => {
+//         if (e.isCorrect){
+//             score++;
+//         }
+//     })
+// }
 
-function summaryResult() {
-    const resultText = document.getElementById("result-text");
-    resultText.innerHTML = "";
-    resultText.innerHTML = `Successfully!!!<br>Username: ${userData.username}<br>Your score is ${score} of ${questions.length}.`;
-}
+// function summaryResult() {
+//     const resultText = document.getElementById("result-text");
+//     resultText.innerHTML = "";
+//     resultText.innerHTML = `Successfully!!!<br>Username: ${userData.username}<br>Your score is ${score} of ${questions.length}.`;
+// }
 
-function showAnswerHistory() {
+// function showAnswerHistory() {
     
-    const answerHistoryText = document.getElementById("answer-history");   
-    answerHistoryText.innerHTML = "";
-    answerHistory.forEach((e,i) => {
-        const questionObj = questions.find(q => q.question === e.question);
-        const correctAnswer = questionObj.answers.find(a => a.correct).text;
-        // answerHistoryText.innerHTML += `
-        // <br>${e.question} : Your answer is <span>${e.selectedAnswer}</span> / Correct answer is <span>${correctAnswer}</span> / Status = <span>${e.isCorrect}</span>`;
-        answerHistoryText.innerHTML += `
-        <u>Question${i+1}</u>: ${e.question}<br>
-        Your Answer: <span style="font-weight: bold; color: ${e.isCorrect ? 'green' : 'red'};">${e.selectedAnswer}</span><br>
-        Correct Answer: ${correctAnswer}<br><br>`
-    })
+//     const answerHistoryText = document.getElementById("answer-history");   
+//     answerHistoryText.innerHTML = "";
+//     answerHistory.forEach((e,i) => {
+//         const questionObj = questions.find(q => q.question === e.question);
+//         const correctAnswer = questionObj.answers.find(a => a.correct).text;
+//         // answerHistoryText.innerHTML += `
+//         // <br>${e.question} : Your answer is <span>${e.selectedAnswer}</span> / Correct answer is <span>${correctAnswer}</span> / Status = <span>${e.isCorrect}</span>`;
+//         answerHistoryText.innerHTML += `
+//         <u>Question${i+1}</u>: ${e.question}<br>
+//         Your Answer: <span style="font-weight: bold; color: ${e.isCorrect ? 'green' : 'red'};">${e.selectedAnswer}</span><br>
+//         Correct Answer: ${correctAnswer}<br><br>`
+//     })
 
-    if (historyBtn.textContent === "Show History"){
-        answerHistoryText.style.visibility = "visible";
-        historyBtn.textContent = "Hide History";
-    }
-    else{
-        answerHistoryText.style.visibility = "hidden";
-        historyBtn.textContent = "Show History";
-    }
-}
+//     if (historyBtn.textContent === "Show History"){
+//         answerHistoryText.style.visibility = "visible";
+//         historyBtn.textContent = "Hide History";
+//     }
+//     else{
+//         answerHistoryText.style.visibility = "hidden";
+//         historyBtn.textContent = "Show History";
+//     }
+// }
 
 //Add EventListenner
 prevBtn.addEventListener("click",previousPage);
 nextBtn.addEventListener("click",nextPage);
-historyBtn.addEventListener("click",showAnswerHistory);
+// historyBtn.addEventListener("click",showAnswerHistory);
