@@ -98,7 +98,7 @@
 .section{
     width: 750px;
     flex: 0 0 auto; 
-    height: 300px;
+    height: 450px;
     display: flex;
     flex-direction: column;
 }
@@ -132,6 +132,7 @@
     background: transparent;
     cursor: pointer;
     transition: .3s;
+    text-align: left;
 }
 .btn-1:hover, .btn-2:hover, .btn-3:hover, .btn-4:hover{
     background: #000;
@@ -192,8 +193,3 @@
     font-weight: 500;
     visibility: hidden;
 }
-#answer-history span{
-    font-weight: 700;
-}
-
-

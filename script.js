@@ -13,39 +13,39 @@ let pagesCount = 0;
 
 const questions = [
     {
-        question:"Question1",
+        question:"What continent is Thailand in?",
         answers:[
-            {text:"Answer1",correct:false},
-            {text:"Answer2",correct:true},
-            {text:"Answer3",correct:false},
-            {text:"Answer4",correct:false},
+            {text:"Africa",correct:false},
+            {text:"Asia",correct:true},
+            {text:"Europe",correct:false},
+            {text:"South America",correct:false},
         ]
     },
     {
-        question:"Question2",
+        question:"What is the capital city of Thailand?",
         answers:[
-            {text:"Answer1",correct:false},
-            {text:"Answer2",correct:false},
-            {text:"Answer3",correct:false},
-            {text:"Answer4",correct:true},
+            {text:"Bangkok",correct:true},
+            {text:"Chiang Mai",correct:false},
+            {text:"Phuket",correct:false},
+            {text:"Pattaya",correct:false},
         ]
     },
     {
-        question:"Question3",
+        question:"Which of the following are Thai dishes?",
         answers:[
-            {text:"Answer1",correct:false},
-            {text:"Answer2",correct:true},
-            {text:"Answer3",correct:false},
-            {text:"Answer4",correct:false},
+            {text:"Hamberger",correct:false},
+            {text:"Spaghetti",correct:false},
+            {text:"Tom Yum Goong",correct:true},
+            {text:"Sushi",correct:false},
         ]
     }
     ,{
-        question:"Question4",
+        question:"Which of the following are traditional Thai festivals?",
         answers:[
-            {text:"Answer1",correct:true},
-            {text:"Answer2",correct:false},
-            {text:"Answer3",correct:false},
-            {text:"Answer4",correct:false},
+            {text:"Christmas",correct:false},
+            {text:"Diwali",correct:false},
+            {text:"Halloween",correct:false},
+            {text:"Songkran",correct:true},
         ]
     }
 ];
@@ -217,8 +217,12 @@ function showAnswerHistory() {
     answerHistory.forEach((e,i) => {
         const questionObj = questions.find(q => q.question === e.question);
         const correctAnswer = questionObj.answers.find(a => a.correct).text;
+        // answerHistoryText.innerHTML += `
+        // <br>${e.question} : Your answer is <span>${e.selectedAnswer}</span> / Correct answer is <span>${correctAnswer}</span> / Status = <span>${e.isCorrect}</span>`;
         answerHistoryText.innerHTML += `
-        <br>${e.question} : Your answer is <span>${e.selectedAnswer}</span> / Correct answer is <span>${correctAnswer}</span> / Status = <span>${e.isCorrect}</span>`;
+        <u>Question${i+1}</u>: ${e.question}<br>
+        Your Answer: <span style="font-weight: bold; color: ${e.isCorrect ? 'green' : 'red'};">${e.selectedAnswer}</span><br>
+        Correct Answer: ${correctAnswer}<br><br>`
     })
 
     if (historyBtn.textContent === "Show History"){
