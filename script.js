@@ -39,6 +39,15 @@ const questions = [
             {text:"Answer4",correct:false},
         ]
     }
+    ,{
+        question:"Question4",
+        answers:[
+            {text:"Answer1",correct:true},
+            {text:"Answer2",correct:false},
+            {text:"Answer3",correct:false},
+            {text:"Answer4",correct:false},
+        ]
+    }
 ];
 
 let userData = {
@@ -93,7 +102,7 @@ function nextPage() {
             updatePage();
         }       
     }
-    else if(pagesCount === 3){
+    else if(pagesCount === 4){
         if (answerHistory.length < questions.length) {
             alert("Please answer all questions before proceeding!");
             return;
@@ -122,7 +131,7 @@ function displayChangePageBtn() {
         prevBtn.style.visibility = "hidden";
         nextBtn.style.visibility = "visible";
     }
-    else if (pagesCount === 4){
+    else if (pagesCount === 5){
         prevBtn.style.visibility = "hidden";
         nextBtn.style.visibility = "hidden";
         calculationScore();
@@ -198,7 +207,7 @@ function calculationScore(){
 function summaryResult() {
     const resultText = document.getElementById("result-text");
     resultText.innerHTML = "";
-    resultText.innerHTML = `Successfully!!!<br>Username: ${userData.username}<br>Your score is ${score} of 3.`;
+    resultText.innerHTML = `Successfully!!!<br>Username: ${userData.username}<br>Your score is ${score} of ${questions.length}.`;
 }
 
 function showAnswerHistory() {
