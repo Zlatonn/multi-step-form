@@ -22,8 +22,7 @@ const questions = [
         id: 2,
         question: "What is the capital city of Thailand?",
         choices: ["Bangkok","Chiang Mai","Phuket","Pattaya"],
-        answers: [0]
-        
+        answers: [0]   
     },
     {
         id: 3,
@@ -66,10 +65,10 @@ function showQuestion() {
             btn.classList.add(`btn-${currentQuestion.id}`);          
             targetSection.appendChild(btn); 
             // define correct answer with custom attribue  
-            if (currentQuestion.answers.includes(i)) {
-                btn.dataset.correct = true;  
-            };         
-            // btn.addEventListener("click",selectAnswer);
+            // if (currentQuestion.answers.includes(i)) {
+            //     btn.dataset.correct = true;  
+            // };         
+            btn.addEventListener("click",selectAnswer);
         });
     });  
 };
@@ -107,7 +106,6 @@ function nextPage() {
         pagesCount++;
         updatePage();
     }
-    
 }
 
 function previousPage() {
@@ -156,34 +154,63 @@ function updateUserData() {
     userData.password = passwordInput.value; 
 }
 
-// function selectAnswer(selectedElement) {
-//     const selectedBtn = selectedElement.target;
+function selectAnswer(selectedElement){  
+    //find current question id & no.answered
+    let questionId, numAnswers;
+    if (pagesCount > 0 && pagesCount <= questions.length) {
+        questionId = questions[pagesCount - 1].id;
+        numAnswers = questions[pagesCount - 1].answers.length;
+    }
+
+    let selectedBtn = selectedElement.target;
+
+    if (!answered[questionId]) {
+        answered[questionId] = [];
+    }
+
+    if (numAnswers === 1 ){  
+        Array.from(selectedBtn.parentElement.children).forEach(e =>{
+            e.classList.remove("selected");
+            e.disabled=false;
+        })
+        selectedBtn.classList.add("selected");
+        selectedBtn.disabled=true;
+
+        answered[questionId] = [Array.from(selectedBtn.parentElement.children).indexOf(selectedBtn)] - 1;
+    }
+    else {     
+        if (!selectedBtn.classList.contains("selected")) {
+            selectedBtn.classList.add("selected");
+            answered[questionId].push(Array.from(selectedBtn.parentElement.children).indexOf(selectedBtn) - 1);  
+        }
+        else {
+            selectedBtn.classList.remove("selected");
+            const indexRemove =  answered[questionId].indexOf(Array.from(selectedBtn.parentElement.children).indexOf(selectedBtn) - 1);
+            answered[questionId].splice(indexRemove,1);
+        }
+    }    
+}
+
     
-//     Array.from(selectedBtn.parentElement.children).forEach(e =>{
-//         e.classList.remove("selected");
-//         e.disabled=false;
-//     })
 
-//     selectedBtn.classList.add("selected");
-//     selectedBtn.disabled=true;
 
-//     const questionText = document.getElementById(`question${pagesCount}`).innerHTML; 
-//     const isCorrect = selectedBtn.dataset.correct === "true"; 
-//     const existingAnswer = answerHistory.find(function(answer) {
-//         return answer.question === questionText;
-//     });
+    // const questionText = document.getElementById(`question${pagesCount}`).innerHTML; 
+    // const isCorrect = selectedBtn.dataset.correct === "true"; 
+    // const existingAnswer = answerHistory.find(function(answer) {
+    //     return answer.question === questionText;
+    // });
 
-//     if (existingAnswer) {
-//         existingAnswer.selectedAnswer = selectedBtn.textContent;
-//         existingAnswer.isCorrect = isCorrect;
-//     } else {
-//         answerHistory.push({
-//             question: questionText,
-//             selectedAnswer: selectedBtn.textContent,
-//             isCorrect: isCorrect
-//         });
-//     }
-// }
+    // if (existingAnswer) {
+    //     existingAnswer.selectedAnswer = selectedBtn.textContent;
+    //     existingAnswer.isCorrect = isCorrect;
+    // } else {
+    //     answerHistory.push({
+    //         question: questionText,
+    //         selectedAnswer: selectedBtn.textContent,
+    //         isCorrect: isCorrect
+    //     });
+    // }
+// };
 
 // function calculationScore(){
 //     console.log(answerHistory);
