@@ -43,6 +43,7 @@ let userData = {
     password:""
 };
 
+let questionId, numAnswers;
 let answered = {};
 
 let answerHistory =[];
@@ -58,7 +59,7 @@ function showQuestion() {
         targetQuestion.innerHTML = currentQuestion.question;
 
         //create answer
-        const targetSection = document.getElementById(`section-${currentQuestion.id+1}`);          
+        const targetSection = document.getElementById(`section-${currentQuestion.id + 1}`);          
         currentQuestion.choices.forEach((choice,i) => {
             const btn = document.createElement("button");
             btn.innerHTML = choice;               
@@ -78,6 +79,15 @@ function updatePage() {
     displayChangePageBtn();
     const translateX = -pagesCount * 750;
     sectionContainer.style.transform = `translateX(${translateX}px)`;
+
+    //update current question id & no.answered
+    if (pagesCount > 0 && pagesCount <= questions.length) {
+        questionId = questions[pagesCount - 1].id;
+        numAnswers = questions[pagesCount - 1].answers.length;
+    }
+    if (!answered[questionId]) {
+        answered[questionId] = [];
+    }
 };
 
 function nextPage() {
@@ -92,8 +102,8 @@ function nextPage() {
             updatePage();
         }       
     }
-    else if(pagesCount === 4){
-        if (answerHistory.length < questions.length) {
+    else if(pagesCount > 0 && pagesCount <= questions.length){
+        if (answered[questionId].length !== numAnswers) {
             alert("Please answer all questions before proceeding!");
             return;
         }
@@ -155,18 +165,8 @@ function updateUserData() {
 }
 
 function selectAnswer(selectedElement){  
-    //find current question id & no.answered
-    let questionId, numAnswers;
-    if (pagesCount > 0 && pagesCount <= questions.length) {
-        questionId = questions[pagesCount - 1].id;
-        numAnswers = questions[pagesCount - 1].answers.length;
-    }
-
+    
     let selectedBtn = selectedElement.target;
-
-    if (!answered[questionId]) {
-        answered[questionId] = [];
-    }
 
     if (numAnswers === 1 ){  
         Array.from(selectedBtn.parentElement.children).forEach(e =>{
@@ -175,8 +175,8 @@ function selectAnswer(selectedElement){
         })
         selectedBtn.classList.add("selected");
         selectedBtn.disabled=true;
+        answered[questionId] = [Array.from(selectedBtn.parentElement.children).indexOf(selectedBtn) - 1];
 
-        answered[questionId] = [Array.from(selectedBtn.parentElement.children).indexOf(selectedBtn)] - 1;
     }
     else {     
         if (!selectedBtn.classList.contains("selected")) {
@@ -191,26 +191,6 @@ function selectAnswer(selectedElement){
     }    
 }
 
-    
-
-
-    // const questionText = document.getElementById(`question${pagesCount}`).innerHTML; 
-    // const isCorrect = selectedBtn.dataset.correct === "true"; 
-    // const existingAnswer = answerHistory.find(function(answer) {
-    //     return answer.question === questionText;
-    // });
-
-    // if (existingAnswer) {
-    //     existingAnswer.selectedAnswer = selectedBtn.textContent;
-    //     existingAnswer.isCorrect = isCorrect;
-    // } else {
-    //     answerHistory.push({
-    //         question: questionText,
-    //         selectedAnswer: selectedBtn.textContent,
-    //         isCorrect: isCorrect
-    //     });
-    // }
-// };
 
 // function calculationScore(){
 //     console.log(answerHistory);
