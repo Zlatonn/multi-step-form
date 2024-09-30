@@ -14,25 +14,25 @@ let pagesCount = 0;
 const questions = [
     {
         id: 1,
-        question: "What continent is Thailand in?",
+        question: "What continent is Thailand in? (1 choice)",
         choices: ["Africa","Asia","Europe","South America"],
         answers: [1]
     },
     {
         id: 2,
-        question: "What is the capital city of Thailand?",
+        question: "What is the capital city of Thailand? (1 choice)",
         choices: ["Bangkok","Chiang Mai","Phuket","Pattaya"],
         answers: [0]   
     },
     {
         id: 3,
-        question: "Which of the following are Thai dishes?",
+        question: "Which of the following are Thai dishes? (2 choice)",
         choices: ["Pad Thai","Spaghetti","Tom Yum Goong","Sushi"], 
         answers: [0,2]
     },
     {
         id: 4,
-        question: "Which of the following are traditional Thai festivals?",
+        question: "Which of the following are traditional Thai festivals? (2 choice)",
         choices: ["Christmas","Loy krathong","Halloween","Songkran"],
         answers: [1,3]
     }
@@ -80,14 +80,16 @@ function updatePage() {
     const translateX = -pagesCount * 750;
     sectionContainer.style.transform = `translateX(${translateX}px)`;
 
-    //update current question id & no.answered
+    // update current question id & no.answered
     if (pagesCount > 0 && pagesCount <= questions.length) {
         questionId = questions[pagesCount - 1].id;
         numAnswers = questions[pagesCount - 1].answers.length;
+        // create answered array for current question
+        if (!answered[questionId]) {
+            answered[questionId] = [];
+        }
     }
-    if (!answered[questionId]) {
-        answered[questionId] = [];
-    }
+    
 };
 
 function nextPage() {
@@ -119,7 +121,7 @@ function nextPage() {
 }
 
 function previousPage() {
-    if (pagesCount > 0 && pagesCount <= 4){
+    if (pagesCount > 0 && pagesCount <= questions.length){
         pagesCount--;
         updatePage();
     } 
@@ -130,15 +132,16 @@ function displayChangePageBtn() {
         prevBtn.style.visibility = "hidden";
         nextBtn.style.visibility = "visible";
     }
-    else if (pagesCount === 5){
+    else if (pagesCount > 0 && pagesCount <= questions.length){
+        prevBtn.style.visibility = "visible";
+        nextBtn.style.visibility = "visible";
+    }      
+    else{
         prevBtn.style.visibility = "hidden";
         nextBtn.style.visibility = "hidden";
         calculationScore();
-        summaryResult();
-    }      
-    else{
-        prevBtn.style.visibility = "visible";
-        nextBtn.style.visibility = "visible";
+        // summaryResult();
+        
     }
 }
 
@@ -192,15 +195,30 @@ function selectAnswer(selectedElement){
 }
 
 
-// function calculationScore(){
-//     console.log(answerHistory);
-//     score = 0;
-//     answerHistory.forEach(e => {
-//         if (e.isCorrect){
-//             score++;
-//         }
-//     })
-// }
+function calculationScore(){
+    score = 0;
+    questions.forEach((q,i) => {
+        let userAnswered = answered[i + 1];
+        let correctAnswer = q.answers;
+        if (correctAnswer.length === 1){
+            if (userAnswered[0] === correctAnswer[0]){
+                score++;
+            }
+        }
+        else{
+            let numCorrect = 0;
+            userAnswered.forEach (e => {
+                if (correctAnswer.includes(e)){
+                    numCorrect++;
+                }
+            });
+            if (numCorrect === correctAnswer.length){
+                score++;
+            }
+        } 
+    }) 
+    console.log(score);
+}
 
 // function summaryResult() {
 //     const resultText = document.getElementById("result-text");
