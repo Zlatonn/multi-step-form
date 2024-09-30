@@ -140,7 +140,7 @@ function displayChangePageBtn() {
         prevBtn.style.visibility = "hidden";
         nextBtn.style.visibility = "hidden";
         calculationScore();
-        // summaryResult();
+        summaryResult();
         
     }
 }
@@ -217,14 +217,13 @@ function calculationScore(){
             }
         } 
     }) 
-    console.log(score);
 }
 
-// function summaryResult() {
-//     const resultText = document.getElementById("result-text");
-//     resultText.innerHTML = "";
-//     resultText.innerHTML = `Successfully!!!<br>Username: ${userData.username}<br>Your score is ${score} of ${questions.length}.`;
-// }
+function summaryResult() {
+    const resultText = document.getElementById("result-text");
+    resultText.innerHTML = "";
+    resultText.innerHTML = `Successfully!!!<br>Username: ${userData.username}<br>Your score is ${score} of ${questions.length}.`;
+}
 
 // function showAnswerHistory() {
     
