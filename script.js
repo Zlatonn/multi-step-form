@@ -1,3 +1,4 @@
+// Access html element
 const steps = document.querySelectorAll(".step-box");
 
 const sectionContainer = document.querySelector(".section-container");
@@ -8,6 +9,7 @@ const historyBtn = document.getElementById("history-btn");
 
 const usernameInput = document.getElementById("username-input");
 
+// Global variable
 let pagesCount = 0;
 
 const questions = [
@@ -37,13 +39,15 @@ const questions = [
     }
 ];
 
+let questionId, numAnswers;
+
 let userData = {
     username:"",
 };
 
-let questionId, numAnswers;
 let answered = {};
 
+// Initial call function
 showQuestion();
 updatePage();
 
@@ -89,26 +93,16 @@ function nextPage() {
         if (userData.username === "" && userData.password === ""){
             alert("Make sure to fill in both your username completely before continuing!");
             return;
-        }
-        else{
-            pagesCount++;
-            updatePage();
-        }       
+        } 
     }
     else if(pagesCount > 0 && pagesCount <= questions.length){
         if (answered[questionId].length !== numAnswers) {
             alert("Ensure that all options are answered before you continue!");
             return;
-        }
-        else{
-            pagesCount++;
-            updatePage();
-        }
+        }  
     }
-    else{
-        pagesCount++;
-        updatePage();
-    }
+    pagesCount++;
+    updatePage();
 }
 
 function previousPage() {
@@ -157,7 +151,7 @@ function updateUserData() {
 
 function selectAnswer(selectedElement){  
     
-    let selectedBtn = selectedElement.target;
+    const selectedBtn = selectedElement.target;
 
     if (numAnswers === 1 ){  
         Array.from(selectedBtn.parentElement.children).forEach(e =>{
@@ -183,7 +177,7 @@ function selectAnswer(selectedElement){
 }
 
 function calculationScore(){
-    currentScore = 0;
+    let currentScore = 0;
     questions.forEach((q,i) => {
         const correctAnswers = q.answers.map(e => q.choices[e]).sort();
         const userAnswered = answered[i + 1].map(e => q.choices[e]).sort();
