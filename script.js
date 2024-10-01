@@ -217,32 +217,35 @@ function summaryResult() {
     resultText.innerHTML = `Successfully!!!<br>Username: ${userData.username}<br>Your score is ${score} of ${questions.length}.`;
 }
 
-// function showAnswerHistory() {
+function showAnswerHistory() {
     
-//     const answerHistoryText = document.getElementById("answer-history");   
-//     answerHistoryText.innerHTML = "";
-//     answerHistory.forEach((e,i) => {
-//         const questionObj = questions.find(q => q.question === e.question);
-//         const correctAnswer = questionObj.answers.find(a => a.correct).text;
-//         // answerHistoryText.innerHTML += `
-//         // <br>${e.question} : Your answer is <span>${e.selectedAnswer}</span> / Correct answer is <span>${correctAnswer}</span> / Status = <span>${e.isCorrect}</span>`;
-//         answerHistoryText.innerHTML += `
-//         <u>Question${i+1}</u>: ${e.question}<br>
-//         Your Answer: <span style="font-weight: bold; color: ${e.isCorrect ? 'green' : 'red'};">${e.selectedAnswer}</span><br>
-//         Correct Answer: ${correctAnswer}<br><br>`
-//     })
+    const answerHistoryText = document.getElementById("answer-history");   
+    answerHistoryText.innerHTML = "";
 
-//     if (historyBtn.textContent === "Show History"){
-//         answerHistoryText.style.visibility = "visible";
-//         historyBtn.textContent = "Hide History";
-//     }
-//     else{
-//         answerHistoryText.style.visibility = "hidden";
-//         historyBtn.textContent = "Show History";
-//     }
-// }
+    questions.forEach((q,i) => {
+        const currentQuestion = q.question;
+        const correctAnswerIndex = q.answers;
+        const correctAnswers = correctAnswerIndex.map(e => q.choices[e]);
+        const userAnswered = answered[i + 1].map(e => q.choices[e]);
+        const isCorrect = JSON.stringify(userAnswered.sort()) === JSON.stringify(correctAnswers.sort());
+
+        answerHistoryText.innerHTML += `
+        <u>Question${i+1}</u>: ${currentQuestion}<br>
+        Your Answer: <span style="font-weight: bold; color: ${isCorrect ? 'green' : 'red'};">${userAnswered.join(", ")}</span><br>
+        Correct Answer: ${correctAnswers.join(", ")}<br><br>`
+    });
+
+    if (historyBtn.textContent === "Show History"){
+        answerHistoryText.style.visibility = "visible";
+        historyBtn.textContent = "Hide History";
+    }
+    else{
+        answerHistoryText.style.visibility = "hidden";
+        historyBtn.textContent = "Show History";
+    }
+}
 
 //Add EventListenner
 prevBtn.addEventListener("click",previousPage);
 nextBtn.addEventListener("click",nextPage);
-// historyBtn.addEventListener("click",showAnswerHistory);
+historyBtn.addEventListener("click",showAnswerHistory);
