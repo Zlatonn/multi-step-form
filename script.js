@@ -9,9 +9,6 @@ const historyBtn = document.getElementById("history-btn");
 
 const usernameInput = document.getElementById("username-input");
 
-// Global variable
-let pagesCount = 0;
-
 const questions = [
   {
     id: 1,
@@ -49,7 +46,7 @@ let answered = {};
 
 // Initial call function
 showQuestion();
-updatePage();
+updatePage(0);
 
 function showQuestion() {
   questions.forEach((currentQuestion) => {
@@ -70,16 +67,16 @@ function showQuestion() {
   });
 }
 
-function updatePage() {
-  updateStepStyle(pagesCount);
-  displayChangePageBtn();
-  const translateX = -pagesCount * 750;
+function updatePage(pageIndex) {
+  updateStepStyle(pageIndex);
+  displayChangePageBtn(pageIndex);
+  const translateX = -pageIndex * 750;
   sectionContainer.style.transform = `translateX(${translateX}px)`;
 
   // update current question id & no.answered
-  if (pagesCount > 0 && pagesCount <= questions.length) {
-    questionId = questions[pagesCount - 1].id;
-    numAnswers = questions[pagesCount - 1].answers.length;
+  if (pageIndex > 0 && pageIndex <= questions.length) {
+    questionId = questions[pageIndex - 1].id;
+    numAnswers = questions[pageIndex - 1].answers.length;
 
     // create answered array for current question
     if (!answered[questionId]) {
@@ -88,35 +85,11 @@ function updatePage() {
   }
 }
 
-function nextPage() {
-  if (pagesCount === 0) {
-    updateUserData();
-    if (userData.username === "" && userData.password === "") {
-      alert("Make sure to fill in both your username completely before continuing!");
-      return;
-    }
-  } else if (pagesCount > 0 && pagesCount <= questions.length) {
-    if (answered[questionId].length !== numAnswers) {
-      alert("Ensure that all options are answered before you continue!");
-      return;
-    }
-  }
-  pagesCount++;
-  updatePage();
-}
-
-function previousPage() {
-  if (pagesCount > 0 && pagesCount <= questions.length) {
-    pagesCount--;
-    updatePage();
-  }
-}
-
-function displayChangePageBtn() {
-  if (pagesCount === 0) {
+function displayChangePageBtn(pageIndex) {
+  if (pageIndex === 0) {
     prevBtn.style.visibility = "hidden";
     nextBtn.style.visibility = "visible";
-  } else if (pagesCount > 0 && pagesCount <= questions.length) {
+  } else if (pageIndex > 0 && pageIndex <= questions.length) {
     prevBtn.style.visibility = "visible";
     nextBtn.style.visibility = "visible";
   } else {
@@ -222,6 +195,32 @@ function showAnswerHistory() {
   } else {
     answerHistoryText.style.visibility = "hidden";
     historyBtn.textContent = "Show History";
+  }
+}
+
+let currentPageIndex = 0;
+
+function nextPage() {
+  if (currentPageIndex === 0) {
+    updateUserData();
+    if (userData.username === "" && userData.password === "") {
+      alert("Make sure to fill in both your username completely before continuing!");
+      return;
+    }
+  } else if (currentPageIndex > 0 && currentPageIndex <= questions.length) {
+    if (answered[questionId].length !== numAnswers) {
+      alert("Ensure that all options are answered before you continue!");
+      return;
+    }
+  }
+  currentPageIndex++;
+  updatePage(currentPageIndex);
+}
+
+function previousPage() {
+  if (currentPageIndex > 0 && currentPageIndex <= questions.length) {
+    currentPageIndex--;
+    updatePage(currentPageIndex);
   }
 }
 
