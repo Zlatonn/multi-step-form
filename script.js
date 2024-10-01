@@ -62,7 +62,8 @@ function showQuestion() {
         currentQuestion.choices.forEach((choice,i) => {
             const btn = document.createElement("button");
             btn.innerHTML = choice;               
-            btn.classList.add(`btn-${currentQuestion.id}`);          
+            btn.classList.add(`btn-${currentQuestion.id}`); 
+            btn.value = i;       
             targetSection.appendChild(btn); 
             btn.addEventListener("click",selectAnswer);
         });
@@ -160,17 +161,17 @@ function selectAnswer(selectedElement){
         })
         selectedBtn.classList.add("selected");
         selectedBtn.disabled=true;
-        answered[questionId] = [Array.from(selectedBtn.parentElement.children).indexOf(selectedBtn) - 1];
+        answered[questionId] = [selectedBtn.value];
 
     }
     else {     
         if (!selectedBtn.classList.contains("selected")) {
-            selectedBtn.classList.add("selected");
-            answered[questionId].push(Array.from(selectedBtn.parentElement.children).indexOf(selectedBtn) - 1);  
+            selectedBtn.classList.add("selected"); 
+            answered[questionId].push(selectedBtn.value);
         }
         else {
             selectedBtn.classList.remove("selected");
-            const indexRemove =  answered[questionId].indexOf(Array.from(selectedBtn.parentElement.children).indexOf(selectedBtn) - 1);
+            const indexRemove =  answered[questionId].indexOf(selectedBtn.value);
             answered[questionId].splice(indexRemove,1);
         }
     }    
