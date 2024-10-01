@@ -7,7 +7,6 @@ const nextBtn = document.getElementById("next-btn");
 const historyBtn = document.getElementById("history-btn");
 
 const usernameInput = document.getElementById("username-input");
-const passwordInput = document.getElementById("password-input");
 
 let pagesCount = 0;
 
@@ -47,7 +46,6 @@ let questionId, numAnswers;
 let answered = {};
 
 let answerHistory =[];
-let score = 0;
 
 showQuestion();
 updatePage();
@@ -65,10 +63,6 @@ function showQuestion() {
             btn.innerHTML = choice;               
             btn.classList.add(`btn-${currentQuestion.id}`);          
             targetSection.appendChild(btn); 
-            // define correct answer with custom attribue  
-            // if (currentQuestion.answers.includes(i)) {
-            //     btn.dataset.correct = true;  
-            // };         
             btn.addEventListener("click",selectAnswer);
         });
     });  
@@ -84,12 +78,12 @@ function updatePage() {
     if (pagesCount > 0 && pagesCount <= questions.length) {
         questionId = questions[pagesCount - 1].id;
         numAnswers = questions[pagesCount - 1].answers.length;
+
         // create answered array for current question
         if (!answered[questionId]) {
             answered[questionId] = [];
         }
-    }
-    
+    } 
 };
 
 function nextPage() {
@@ -139,9 +133,7 @@ function displayChangePageBtn() {
     else{
         prevBtn.style.visibility = "hidden";
         nextBtn.style.visibility = "hidden";
-        calculationScore();
         summaryResult();
-        
     }
 }
 
@@ -164,7 +156,6 @@ function updateStepStyle(pagesCount){
 
 function updateUserData() {
     userData.username = usernameInput.value;
-    userData.password = passwordInput.value; 
 }
 
 function selectAnswer(selectedElement){  
@@ -194,15 +185,14 @@ function selectAnswer(selectedElement){
     }    
 }
 
-
 function calculationScore(){
-    score = 0;
+    currentScore = 0;
     questions.forEach((q,i) => {
-        let userAnswered = answered[i + 1];
-        let correctAnswer = q.answers;
+        const userAnswered = answered[i + 1];
+        const correctAnswer = q.answers;
         if (correctAnswer.length === 1){
             if (userAnswered[0] === correctAnswer[0]){
-                score++;
+                currentScore++;
             }
         }
         else{
@@ -213,13 +203,15 @@ function calculationScore(){
                 }
             });
             if (numCorrect === correctAnswer.length){
-                score++;
+                currentScore++;
             }
         } 
-    }) 
+    });
+    return currentScore
 }
 
 function summaryResult() {
+    let score = calculationScore();
     const resultText = document.getElementById("result-text");
     resultText.innerHTML = "";
     resultText.innerHTML = `Successfully!!!<br>Username: ${userData.username}<br>Your score is ${score} of ${questions.length}.`;
