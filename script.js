@@ -39,13 +39,10 @@ const questions = [
 
 let userData = {
     username:"",
-    password:""
 };
 
 let questionId, numAnswers;
 let answered = {};
-
-let answerHistory =[];
 
 showQuestion();
 updatePage();
@@ -90,7 +87,7 @@ function nextPage() {
     if (pagesCount === 0){
         updateUserData();
         if (userData.username === "" && userData.password === ""){
-            alert("Please input username & password completly first!!");
+            alert("Make sure to fill in both your username completely before continuing!");
             return;
         }
         else{
@@ -100,7 +97,7 @@ function nextPage() {
     }
     else if(pagesCount > 0 && pagesCount <= questions.length){
         if (answered[questionId].length !== numAnswers) {
-            alert("Please answer all questions before proceeding!");
+            alert("Ensure that all options are answered before you continue!");
             return;
         }
         else{
@@ -188,26 +185,26 @@ function selectAnswer(selectedElement){
 function calculationScore(){
     currentScore = 0;
     questions.forEach((q,i) => {
-        const userAnswered = answered[i + 1];
-        const correctAnswer = q.answers;
-        if (correctAnswer.length === 1){
-            if (userAnswered[0] === correctAnswer[0]){
-                currentScore++;
-            }
+        const correctAnswers = q.answers.map(e => q.choices[e]).sort();
+        const userAnswered = answered[i + 1].map(e => q.choices[e]).sort();
+        const isCorrect = compareAnswer(correctAnswers,userAnswered);
+        if (isCorrect){
+            currentScore++;
         }
-        else{
-            let numCorrect = 0;
-            userAnswered.forEach (e => {
-                if (correctAnswer.includes(e)){
-                    numCorrect++;
-                }
-            });
-            if (numCorrect === correctAnswer.length){
-                currentScore++;
-            }
-        } 
     });
-    return currentScore
+    return currentScore;
+}
+
+function compareAnswer (arr1,arr2){
+    if (arr1.length !== arr2.length){
+        return false;
+    }
+    for(let j = 0;j < arr1.length;j++){
+        if (arr1[j] !== arr2[j]){
+            return false;
+        }
+    }
+    return true;
 }
 
 function summaryResult() {
@@ -224,15 +221,14 @@ function showAnswerHistory() {
 
     questions.forEach((q,i) => {
         const currentQuestion = q.question;
-        const correctAnswerIndex = q.answers;
-        const correctAnswers = correctAnswerIndex.map(e => q.choices[e]);
-        const userAnswered = answered[i + 1].map(e => q.choices[e]);
-        const isCorrect = JSON.stringify(userAnswered.sort()) === JSON.stringify(correctAnswers.sort());
+        const correctAnswers = q.answers.map(e => q.choices[e]).sort();
+        const userAnswered = answered[i + 1].map(e => q.choices[e]).sort();
+        const isCorrect = compareAnswer(correctAnswers,userAnswered);
 
         answerHistoryText.innerHTML += `
         <u>Question${i+1}</u>: ${currentQuestion}<br>
         Your Answer: <span style="font-weight: bold; color: ${isCorrect ? 'green' : 'red'};">${userAnswered.join(", ")}</span><br>
-        Correct Answer: ${correctAnswers.join(", ")}<br><br>`
+        Correct Answer: ${correctAnswers.join(", ")}<br><br>`;
     });
 
     if (historyBtn.textContent === "Show History"){
