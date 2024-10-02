@@ -41,12 +41,13 @@ const questions = [
 
 let questionId, numAnswers;
 
-let userData = {
-  username: "",
-};
-
 let answered = {};
 
+let currentUser = "";
+
+let userData = [];
+
+let ScoreHistory = {};
 // Initial call function
 showQuestion();
 updatePage();
@@ -91,7 +92,7 @@ function updatePage() {
 function nextPage() {
   if (pagesCount === 0) {
     updateUserData();
-    if (userData.username === "" && userData.password === "") {
+    if (currentUser === "") {
       alert("Make sure to fill in both your username completely before continuing!");
       return;
     }
@@ -142,7 +143,7 @@ function updateStepStyle(pagesCount) {
 }
 
 function updateUserData() {
-  userData.username = usernameInput.value;
+  currentUser = usernameInput.value;
 }
 
 function selectAnswer(selectedElement) {
@@ -197,7 +198,7 @@ function summaryResult() {
   let score = calculationScore();
   const resultText = document.getElementById("result-text");
   resultText.innerHTML = "";
-  resultText.innerHTML = `Successfully!!!<br>Username: ${userData.username}<br>Your score is ${score} of ${questions.length}.`;
+  resultText.innerHTML = `Successfully!!!<br>Username: ${currentUser}<br>Your score is ${score} of ${questions.length}.`;
 }
 
 function showAnswerHistory() {
@@ -224,7 +225,6 @@ function showAnswerHistory() {
     historyBtn.textContent = "Show History";
   }
 }
-
 //Add EventListenner
 prevBtn.addEventListener("click", previousPage);
 nextBtn.addEventListener("click", nextPage);
