@@ -45,11 +45,12 @@ let answered = {};
 
 let currentUser = "";
 
-let userData = [];
+let userData = {};
 
 // Initial call function
 showQuestion();
 updatePage();
+loadUserData();
 
 function showQuestion() {
   questions.forEach((currentQuestion) => {
@@ -90,7 +91,6 @@ function updatePage() {
 
 function nextPage() {
   if (pagesCount === 0) {
-    updateUserData();
     if (currentUser === "") {
       alert("Make sure to fill in both your username completely before continuing!");
       return;
@@ -142,7 +142,10 @@ function updateStepStyle(pagesCount) {
 }
 
 function updateUserData() {
-  currentUser = usernameInput.value;
+  if (usernameInput.value) {
+    currentUser = usernameInput.value;
+    showUserDataHistory(currentUser);
+  }
 }
 
 function selectAnswer(selectedElement) {
@@ -267,17 +270,36 @@ function registerUserData(currentUser, currentScore) {
     }
     userData[currentUser].push(userEntry);
   }
-  showUserDataHistory(currentUser);
+  localStorage.setItem("userData", JSON.stringify(userData));
+  console.log(userData);
+}
+
+function loadUserData() {
+  const storedData = localStorage.getItem("userData");
+  if (storedData) {
+    userData = JSON.parse(storedData);
+  } else {
+    userData = {};
+  }
 }
 
 function showUserDataHistory(currentUser) {
-  if (userData[currentUser]) {
+  const userDataHistoryText = document.getElementById("user-history");
+  if (!userData[currentUser]) {
+    userDataHistoryText.innerHTML = "";
+  } else {
+    userDataHistoryText.innerHTML = "";
     userData[currentUser].forEach((e) => {
-      const userdataHistoryText = `timeStamp: ${e.timeStamp} / score: ${e.score} / answer1: ${e.answer1} / answer2: ${
-        e.answer2
-      } / answer3: ${e.answer3.join(", ")} / answer4: ${e.answer4.join(", ")}`;
-      console.log(userdataHistoryText);
+      userDataHistoryText.innerHTML += `
+        <strong>Time-stamp:</strong> ${e.timeStamp}<br>
+        <strong>Score:</strong> ${e.score}<br>
+        <strong>Answer 1:</strong> ${e.answer1}<br>
+        <strong>Answer 2:</strong> ${e.answer2}<br>
+        <strong>Answer 3:</strong> ${e.answer3.join(", ")}<br>
+        <strong>Answer 4:</strong> ${e.answer4.join(", ")}<br><br>
+      `;
     });
+    console.log(userDataHistoryText.innerHTML);
   }
 }
 
@@ -285,3 +307,4 @@ function showUserDataHistory(currentUser) {
 prevBtn.addEventListener("click", previousPage);
 nextBtn.addEventListener("click", nextPage);
 historyBtn.addEventListener("click", displayAnswerHistory);
+usernameInput.addEventListener("keyup", updateUserData);

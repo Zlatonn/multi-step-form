@@ -122,6 +122,12 @@
   border: 1px solid rgb(43, 113, 242);
   outline: none;
 }
+#user-history {
+  border: none;
+  outline: none;
+  font-weight: 500;
+  font-size: 8px;
+}
 .btn-1,
 .btn-2,
 .btn-3,
