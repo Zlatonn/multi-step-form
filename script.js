@@ -173,8 +173,6 @@ function calculationScore() {
   questions.forEach((q, i) => {
     const userAnswered = answered[i + 1].sort();
     const correctAnswers = q.answers.sort();
-    console.log(userAnswered);
-    console.log(correctAnswers);
     const isCorrect = compareAnswer(correctAnswers, userAnswered);
     if (isCorrect) {
       currentScore++;
@@ -200,6 +198,7 @@ function summaryResult() {
   const resultText = document.getElementById("result-text");
   resultText.innerHTML = "";
   resultText.innerHTML = `Successfully!!!<br>Username: ${currentUser}<br>Your score is ${score} of ${questions.length}.`;
+  registerUserData(currentUser, score);
 }
 
 function displayAnswerHistory() {
@@ -244,6 +243,31 @@ function getTimeStamp() {
   const minute = today.getMinutes();
   const second = today.getSeconds();
   return `${day}-${month}-${year} ${hour}:${minute}:${second}`;
+}
+
+function registerUserData(currentUser, currentScore) {
+  const timeStampFormat = getTimeStamp();
+  const score = currentScore;
+
+  const userAnswered = questions.map((_, i) => getCurrentHistory(i)[1]);
+
+  const userEntry = {
+    timeStamp: timeStampFormat,
+    score: score,
+  };
+  userAnswered.forEach((e, i) => {
+    userEntry[`answer${i + 1}`] = e;
+  });
+
+  if (!userData[currentUser]) {
+    userData[currentUser] = [userEntry];
+  } else {
+    if (userData[currentUser].length === 5) {
+      userData[currentUser].shift();
+    }
+    userData[currentUser].push(userEntry);
+  }
+  console.log(userData);
 }
 
 //Add EventListenner
