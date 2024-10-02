@@ -47,7 +47,6 @@ let currentUser = "";
 
 let userData = [];
 
-let ScoreHistory = {};
 // Initial call function
 showQuestion();
 updatePage();
@@ -124,6 +123,7 @@ function displayChangePageBtn() {
     prevBtn.style.visibility = "hidden";
     nextBtn.style.visibility = "hidden";
     summaryResult();
+    createAnswerHistoryText();
   }
 }
 
@@ -172,8 +172,8 @@ function selectAnswer(selectedElement) {
 function calculationScore() {
   let currentScore = 0;
   questions.forEach((q, i) => {
-    const correctAnswers = q.answers.map((e) => q.choices[e]).sort();
-    const userAnswered = answered[i + 1].map((e) => q.choices[e]).sort();
+    const userAnswered = answered[i + 1].sort();
+    const correctAnswers = q.answers.sort();
     const isCorrect = compareAnswer(correctAnswers, userAnswered);
     if (isCorrect) {
       currentScore++;
@@ -201,22 +201,24 @@ function summaryResult() {
   resultText.innerHTML = `Successfully!!!<br>Username: ${currentUser}<br>Your score is ${score} of ${questions.length}.`;
 }
 
-function showAnswerHistory() {
+function createAnswerHistoryText() {
   const answerHistoryText = document.getElementById("answer-history");
   answerHistoryText.innerHTML = "";
 
   questions.forEach((q, i) => {
     const currentQuestion = q.question;
-    const correctAnswers = q.answers.map((e) => q.choices[e]).sort();
-    const userAnswered = answered[i + 1].map((e) => q.choices[e]).sort();
-    const isCorrect = compareAnswer(correctAnswers, userAnswered);
+    const userAnsweredText = answered[i + 1].map((e) => q.choices[e]).sort();
+    const correctAnswersText = q.answers.map((e) => q.choices[e]).sort();
+    const isCorrect = compareAnswer(correctAnswersText, userAnsweredText);
 
     answerHistoryText.innerHTML += `
         <u>Question${i + 1}</u>: ${currentQuestion}<br>
-        Your Answer: <span style="font-weight: bold; color: ${isCorrect ? "green" : "red"};">${userAnswered.join(", ")}</span><br>
-        Correct Answer: ${correctAnswers.join(", ")}<br><br>`;
+        Your Answer: <span style="font-weight: bold; color: ${isCorrect ? "green" : "red"};">${userAnsweredText.join(", ")}</span><br>
+        Correct Answer: ${correctAnswersText.join(", ")}<br><br>`;
   });
+}
 
+function displayAnswerHistory() {
   if (historyBtn.textContent === "Show History") {
     answerHistoryText.style.visibility = "visible";
     historyBtn.textContent = "Hide History";
@@ -225,7 +227,8 @@ function showAnswerHistory() {
     historyBtn.textContent = "Show History";
   }
 }
+
 //Add EventListenner
 prevBtn.addEventListener("click", previousPage);
 nextBtn.addEventListener("click", nextPage);
-historyBtn.addEventListener("click", showAnswerHistory);
+historyBtn.addEventListener("click", displayAnswerHistory);
