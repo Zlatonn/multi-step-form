@@ -267,7 +267,19 @@ function registerUserData(currentUser, currentScore) {
     }
     userData[currentUser].push(userEntry);
   }
-  console.log(userData);
+  showUserDataHistory(currentUser);
+}
+
+function showUserDataHistory(currentUser) {
+  if (userData[currentUser]) {
+    userData[currentUser].forEach((e) => {
+      console.log(
+        `timeStamp: ${e.timeStamp} / score: ${e.score} / answer1: ${e.answer1} / answer2: ${e.answer2} / answer3: ${e.answer3.join(
+          ", "
+        )} / answer4: ${e.answer4.join(", ")}`
+      );
+    });
+  }
 }
 
 //Add EventListenner
