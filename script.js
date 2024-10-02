@@ -235,6 +235,17 @@ function getCurrentHistory(index) {
   return [currentQuestion, userAnsweredText, correctAnswersText];
 }
 
+function getTimeStamp() {
+  const today = new Date();
+  const day = today.getDate();
+  const month = today.getMonth() + 1;
+  const year = today.getFullYear();
+  const hour = today.getHours();
+  const minute = today.getMinutes();
+  const second = today.getSeconds();
+  return `${day}-${month}-${year} ${hour}:${minute}:${second}`;
+}
+
 //Add EventListenner
 prevBtn.addEventListener("click", previousPage);
 nextBtn.addEventListener("click", nextPage);
