@@ -273,11 +273,10 @@ function registerUserData(currentUser, currentScore) {
 function showUserDataHistory(currentUser) {
   if (userData[currentUser]) {
     userData[currentUser].forEach((e) => {
-      console.log(
-        `timeStamp: ${e.timeStamp} / score: ${e.score} / answer1: ${e.answer1} / answer2: ${e.answer2} / answer3: ${e.answer3.join(
-          ", "
-        )} / answer4: ${e.answer4.join(", ")}`
-      );
+      const userdataHistoryText = `timeStamp: ${e.timeStamp} / score: ${e.score} / answer1: ${e.answer1} / answer2: ${
+        e.answer2
+      } / answer3: ${e.answer3.join(", ")} / answer4: ${e.answer4.join(", ")}`;
+      console.log(userdataHistoryText);
     });
   }
 }
