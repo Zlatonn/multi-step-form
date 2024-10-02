@@ -123,7 +123,6 @@ function displayChangePageBtn() {
     prevBtn.style.visibility = "hidden";
     nextBtn.style.visibility = "hidden";
     summaryResult();
-    createAnswerHistoryText();
   }
 }
 
@@ -156,14 +155,14 @@ function selectAnswer(selectedElement) {
     });
     selectedBtn.classList.add("selected");
     selectedBtn.disabled = true;
-    answered[questionId] = [selectedBtn.value];
+    answered[questionId] = [parseInt(selectedBtn.value)];
   } else {
     if (!selectedBtn.classList.contains("selected")) {
       selectedBtn.classList.add("selected");
-      answered[questionId].push(selectedBtn.value);
+      answered[questionId].push(parseInt(selectedBtn.value));
     } else {
       selectedBtn.classList.remove("selected");
-      const indexRemove = answered[questionId].indexOf(selectedBtn.value);
+      const indexRemove = answered[questionId].indexOf(parseInt(selectedBtn.value));
       answered[questionId].splice(indexRemove, 1);
     }
   }
@@ -174,6 +173,8 @@ function calculationScore() {
   questions.forEach((q, i) => {
     const userAnswered = answered[i + 1].sort();
     const correctAnswers = q.answers.sort();
+    console.log(userAnswered);
+    console.log(correctAnswers);
     const isCorrect = compareAnswer(correctAnswers, userAnswered);
     if (isCorrect) {
       currentScore++;
@@ -201,24 +202,23 @@ function summaryResult() {
   resultText.innerHTML = `Successfully!!!<br>Username: ${currentUser}<br>Your score is ${score} of ${questions.length}.`;
 }
 
-function createAnswerHistoryText() {
+function displayAnswerHistory() {
   const answerHistoryText = document.getElementById("answer-history");
   answerHistoryText.innerHTML = "";
 
-  questions.forEach((q, i) => {
-    const currentQuestion = q.question;
-    const userAnsweredText = answered[i + 1].map((e) => q.choices[e]).sort();
-    const correctAnswersText = q.answers.map((e) => q.choices[e]).sort();
+  for (let i = 0; i < questions.length; i++) {
+    const currentHistory = getCurrentHistory(i);
+    const currentQuestion = currentHistory[0];
+    const userAnsweredText = currentHistory[1];
+    const correctAnswersText = currentHistory[2];
     const isCorrect = compareAnswer(correctAnswersText, userAnsweredText);
 
     answerHistoryText.innerHTML += `
         <u>Question${i + 1}</u>: ${currentQuestion}<br>
         Your Answer: <span style="font-weight: bold; color: ${isCorrect ? "green" : "red"};">${userAnsweredText.join(", ")}</span><br>
         Correct Answer: ${correctAnswersText.join(", ")}<br><br>`;
-  });
-}
+  }
 
-function displayAnswerHistory() {
   if (historyBtn.textContent === "Show History") {
     answerHistoryText.style.visibility = "visible";
     historyBtn.textContent = "Hide History";
@@ -226,6 +226,13 @@ function displayAnswerHistory() {
     answerHistoryText.style.visibility = "hidden";
     historyBtn.textContent = "Show History";
   }
+}
+
+function getCurrentHistory(index) {
+  const currentQuestion = questions[index].question;
+  const userAnsweredText = answered[index + 1].map((e) => questions[index].choices[e]).sort();
+  const correctAnswersText = questions[index].answers.map((e) => questions[index].choices[e]).sort();
+  return [currentQuestion, userAnsweredText, correctAnswersText];
 }
 
 //Add EventListenner
