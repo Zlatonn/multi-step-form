@@ -289,17 +289,16 @@ function showUserDataHistory(currentUser) {
     userDataHistoryText.innerHTML = "";
   } else {
     userDataHistoryText.innerHTML = "";
-    userData[currentUser].forEach((e) => {
+    for (i = userData[currentUser].length - 1; i >= 0; i--) {
       userDataHistoryText.innerHTML += `
-        <strong>Time-stamp:</strong> ${e.timeStamp}<br>
-        <strong>Score:</strong> ${e.score}<br>
-        <strong>Answer 1:</strong> ${e.answer1}<br>
-        <strong>Answer 2:</strong> ${e.answer2}<br>
-        <strong>Answer 3:</strong> ${e.answer3.join(", ")}<br>
-        <strong>Answer 4:</strong> ${e.answer4.join(", ")}<br><br>
-      `;
-    });
-    console.log(userDataHistoryText.innerHTML);
+      <div style="padding: 5px; border:1px solid #ccc ;border-radius:3px; margin-bottom: 10px;" >
+        <strong>Time: </strong>${userData[currentUser][i].timeStamp}<br>
+        <strong>Score:</strong> ${userData[currentUser][i].score} |
+        <strong>Answers:</strong> 1: ${userData[currentUser][i].answer1}, 2: ${userData[currentUser][i].answer2}, 3: ${userData[
+        currentUser
+      ][i].answer3.join(", ")}, 4: ${userData[currentUser][i].answer4.join(", ")}
+      </div>`;
+    }
   }
 }
 

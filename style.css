@@ -98,7 +98,7 @@
 .section {
   width: 750px;
   flex: 0 0 auto;
-  height: 450px;
+  height: 400px;
   display: flex;
   flex-direction: column;
 }
@@ -126,7 +126,7 @@
   border: none;
   outline: none;
   font-weight: 500;
-  font-size: 8px;
+  font-size: 12px;
 }
 .btn-1,
 .btn-2,
