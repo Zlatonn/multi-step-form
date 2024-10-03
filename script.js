@@ -306,4 +306,11 @@ function showUserDataHistory(currentUser) {
 prevBtn.addEventListener("click", previousPage);
 nextBtn.addEventListener("click", nextPage);
 historyBtn.addEventListener("click", displayAnswerHistory);
-usernameInput.addEventListener("keyup", updateUserData);
+usernameInput.addEventListener("input", updateUserData);
+
+// Prevent tab workig
+usernameInput.addEventListener("keydown", function (event) {
+  if (event.key === "Tab") {
+    event.preventDefault();
+  }
+});
