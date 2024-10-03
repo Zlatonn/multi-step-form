@@ -145,6 +145,9 @@ function updateUserData() {
   if (usernameInput.value) {
     currentUser = usernameInput.value;
     showUserDataHistory(currentUser);
+  } else {
+    currentUser = "";
+    showUserDataHistory(currentUser);
   }
 }
 
@@ -271,7 +274,6 @@ function registerUserData(currentUser, currentScore) {
     userData[currentUser].push(userEntry);
   }
   localStorage.setItem("userData", JSON.stringify(userData));
-  console.log(userData);
 }
 
 function loadUserData() {
@@ -289,17 +291,26 @@ function showUserDataHistory(currentUser) {
     userDataHistoryText.innerHTML = "";
   } else {
     userDataHistoryText.innerHTML = "";
+
+    const maxScore = findMaxScoreHistory(currentUser);
+
     for (i = userData[currentUser].length - 1; i >= 0; i--) {
+      const isMaxScore = userData[currentUser][i].score === maxScore;
       userDataHistoryText.innerHTML += `
-      <div style="padding: 5px; border:1px solid #ccc ;border-radius:3px; margin-bottom: 10px;" >
+      <div style="padding: 5px; border:1px solid #ccc ;border-radius:3px; margin-bottom: 10px; color: ${isMaxScore ? "green" : ""};">
         <strong>Time: </strong>${userData[currentUser][i].timeStamp}<br>
-        <strong>Score:</strong> ${userData[currentUser][i].score} |
+        <strong>Score:</strong>${userData[currentUser][i].score} |
         <strong>Answers:</strong> 1: ${userData[currentUser][i].answer1}, 2: ${userData[currentUser][i].answer2}, 3: ${userData[
         currentUser
       ][i].answer3.join(", ")}, 4: ${userData[currentUser][i].answer4.join(", ")}
       </div>`;
     }
   }
+}
+
+function findMaxScoreHistory(user) {
+  const scoreHistory = userData[user].map((e) => e.score);
+  return Math.max(...scoreHistory);
 }
 
 //Add EventListenner
