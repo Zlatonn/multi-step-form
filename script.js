@@ -177,8 +177,8 @@ function selectAnswer(selectedElement) {
 function calculationScore() {
   let currentScore = 0;
   questions.forEach((q, i) => {
-    const userAnswered = answered[i + 1].sort();
-    const correctAnswers = q.answers.sort();
+    const userAnswered = answered[i + 1].sort((a, b) => a - b);
+    const correctAnswers = q.answers.sort((a, b) => a - b);
     const isCorrect = compareAnswer(correctAnswers, userAnswered);
     if (isCorrect) {
       currentScore++;
