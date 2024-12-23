@@ -81,6 +81,7 @@
   background: #5bbb72;
 }
 .body-container {
+  min-height: 480px;
   width: 750px;
   padding: 30px 50px;
   border: #eee solid 1px;
